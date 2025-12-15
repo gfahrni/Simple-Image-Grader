@@ -4,6 +4,8 @@
 
 ---
 
+![Demo Screenshot](assets/screenshot_demo.png)
+
 ## Features
 
 - Display images for each patient in a scrollable view.
