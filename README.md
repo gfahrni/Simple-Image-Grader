@@ -94,6 +94,22 @@ Simple-Image-Grader/
 
 ---
 
+## macOS Deployment
+
+1. Install dependencies:
+   ```bash
+   pip install kivy pyinstaller
+   ````
+
+2. Build the macOS app:
+   ```bash
+   python build_mac.py
+   ````
+
+The .app bundle will be created at the OUTPUT_FOLDER in build_mac.py location
+
+---
+
 ## License
 
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
