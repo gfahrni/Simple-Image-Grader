@@ -33,7 +33,7 @@
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/Simple-Image-Grader.git
+git clone https://github.com/gfahrni/Simple-Image-Grader.git
 cd Simple-Image-Grader
 ```
 
