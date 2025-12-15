@@ -1,0 +1,157 @@
+<Viewer>:
+    orientation: "vertical"
+    padding: 0
+    spacing: 0
+
+    # Top layout - 5% height, dark gray
+    BoxLayout:
+        size_hint_y: 0.05
+        canvas.before:
+            Color:
+                rgba: 0.2, 0.2, 0.2, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+ 
+        Label:
+            id: patient_label
+            text: "Current Patient: " + str(root.current_patient)
+            color: 1, 1, 1, 1
+
+    # Middle layout - 75% height, scrollable
+    ScrollView:
+        size_hint_y: 0.75
+        do_scroll_x: False
+        do_scroll_y: True
+
+        BoxLayout:
+            id: images_layout
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height  # So the ScrollView knows content height
+            spacing: 5
+            padding: 5
+
+    # Bottom layout - 20% height, dark gray
+    BoxLayout:
+        size_hint_y: 0.2
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: 0.2, 0.2, 0.2, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Top half of bottom layout - toggle buttons
+        BoxLayout:
+            size_hint_y: 0.4
+            spacing: 5
+            padding: 5
+
+            ToggleButton:
+                id: toggle_1
+                text: "Bad image quality (1)"
+                background_color: 0.8, 0.8, 0.8, 1
+                color: 1, 1, 1, 1
+                text_size: self.width - 10, None
+                halign: 'center'
+                valign: 'middle'
+                shorten: False
+                on_state:
+                    self.background_color = (0.3, 0.6, 0.9, 1) if self.state == "down" else (0.8, 0.8, 0.8, 1)
+
+            ToggleButton:
+                id: toggle_2
+                text: "Small segmentation error (2)"
+                background_color: 0.8, 0.8, 0.8, 1
+                color: 1, 1, 1, 1
+                text_size: self.width - 10, None
+                halign: 'center'
+                valign: 'middle'
+                shorten: False
+                on_state:
+                    self.background_color = (0.3, 0.6, 0.9, 1) if self.state == "down" else (0.8, 0.8, 0.8, 1)
+
+            ToggleButton:
+                id: toggle_3
+                text: "Large segmentation error (3)"
+                background_color: 0.8, 0.8, 0.8, 1
+                color: 1, 1, 1, 1
+                text_size: self.width - 10, None
+                halign: 'center'
+                valign: 'middle'
+                shorten: False
+                on_state:
+                    self.background_color = (0.3, 0.6, 0.9, 1) if self.state == "down" else (0.8, 0.8, 0.8, 1)
+
+            ToggleButton:
+                id: toggle_4
+                text: "Artifact (4)"
+                background_color: 0.8, 0.8, 0.8, 1
+                color: 1, 1, 1, 1
+                text_size: self.width - 10, None
+                halign: 'center'
+                valign: 'middle'
+                shorten: False
+                on_state:
+                    self.background_color = (0.3, 0.6, 0.9, 1) if self.state == "down" else (0.8, 0.8, 0.8, 1)
+
+            ToggleButton:
+                id: toggle_5
+                text: "Infarct (5)"
+                background_color: 0.8, 0.8, 0.8, 1
+                color: 1, 1, 1, 1
+                text_size: self.width - 10, None
+                halign: 'center'
+                valign: 'middle'
+                shorten: False
+                on_state:
+                    self.background_color = (0.3, 0.6, 0.9, 1) if self.state == "down" else (0.8, 0.8, 0.8, 1)
+
+
+        # Bottom half of bottom layout - buttons
+        BoxLayout:
+            size_hint_y: 0.33
+            spacing: 5
+            padding: 5
+
+            Button:
+                id: clear_button
+                text: "Clear (C)"
+                size_hint_x: 1
+                background_color: 1, 1, 1, 1 # gray
+                color: 1, 1, 1, 1                  # white text
+                on_release: root.clear_togglebuttons()
+
+            Button:
+                id: previous_button
+                text: "Previous (Q)"
+                size_hint_x: 1
+                background_color: 1, 1, 1, 1  # gray
+                color: 1, 1, 1, 1                    # white text
+                on_release: root.previous_item()
+
+            Button:
+                id: validate_button
+                text: "Validate (Space)"
+                size_hint_x: 3
+                background_color: 1, 1, 1, 1  # gray
+                color: 1, 1, 1, 1                    # white text
+                on_release: root.validate_item()
+
+            Button:
+                id: next_button
+                text: "Next (E)"
+                size_hint_x: 1
+                background_color: 1, 1, 1, 1  # gray
+                color: 1, 1, 1, 1                    # white text
+                on_release: root.next_item()
+            
+            Button:
+                id: goto_button
+                text: "Go To (G)"
+                size_hint_x: 1
+                background_color: 1, 1, 1, 1
+                color: 1, 1, 1, 1
+                on_release: root.goto_item()
