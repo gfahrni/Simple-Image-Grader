@@ -47,7 +47,7 @@ cmd = [
     "pyinstaller",
     "--noconfirm",      # Remove old outputs automatically
     "--clean",          # Clean PyInstaller cache/temp files
-    "--onefile",        # Build a single executable
+    "--onedir",        # Build a one-folder bundle
     f"--name={NAME}",   # Name of the exe
 ]
 
