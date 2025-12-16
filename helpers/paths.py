@@ -2,11 +2,13 @@ import sys
 from pathlib import Path
 
 # ============================================================================
-# DETERMINE DATA FOLDER PATH
+# DETERMINE DATA FOLDER PATH AND RUNTIME PATH
 # 
 # Data files location depends on execution context:
 # - Packaged app: Data lives in same folder as executable (.app/.exe)
-# - Development mode: Data lives in "data" subfolder of project
+# - Development mode: Data lives in "data" subfolder of project.
+#
+# RUNTIME_PATH function helps locate assets during runtime (such as icons, sounds, kv files).
 # ============================================================================
 
 DATA_FOLDER = (
@@ -20,3 +22,17 @@ DATA_FOLDER = (
     # Development mode (default)
     else Path(__file__).parent.parent / "data" # Path to 'data' folder in development
 )
+
+def RUNTIME_PATH(*parts):
+    """
+    Path helper for runtime assets (icons, sounds, kv, etc.)
+
+    DEV:
+        <project_root>/<parts>
+
+    PyInstaller (--onedir / --onefile):
+        _MEIPASS/<parts>
+    """
+    if getattr(sys, "frozen", False): # frozen = packaged by PyInstaller
+        return Path(sys._MEIPASS).joinpath(*parts) # MEIPASS is the temp folder created by PyInstaller
+    return Path(__file__).parent.parent.joinpath(*parts) 

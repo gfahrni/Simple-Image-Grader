@@ -1,14 +1,13 @@
 # helpers/sounds.py
 
-import os
 from kivy.core.audio import SoundLoader
-from helpers.paths import DATA_FOLDER
+from helpers.paths import RUNTIME_PATH
 
 class Sounds:
     def __init__(self):
         # Load validate sound
-        sound_path = os.path.join('assets','validate.wav') # Relative path to sounds folder
-        self.validate_sound = SoundLoader.load(sound_path)
+        sound_path = RUNTIME_PATH("assets", "validate.wav") # Path to validate.wav sound file
+        self.validate_sound = SoundLoader.load(str(sound_path))
         if self.validate_sound:
             print(f"Validate sound loaded: {sound_path}")
         else:

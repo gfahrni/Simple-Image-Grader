@@ -10,6 +10,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.clock import Clock
 from helpers.sounds import Sounds
+from helpers.paths import RUNTIME_PATH
 import os
 
 
@@ -21,7 +22,7 @@ from helpers.popups import go_to_patient_popup
 from images_processor import get_patient_images
 
 # Load the KV file for the Viewer layout
-Builder.load_file(os.path.join(os.path.dirname(__file__), "viewer.kv"))
+Builder.load_file(str(RUNTIME_PATH("viewer.kv"))) 
 
 # ==========================
 # Define Viewer class
