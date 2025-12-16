@@ -128,7 +128,24 @@ The `.app` bundle will be created in the `OUTPUT_FOLDER` specified in the build 
 
 ## Windows Deployment
 
-*(Not implemented yet, see `build_scripts/build_windows.py` placeholder)*
+## Windows Deployment
+
+1. Install dependencies:
+
+```bash
+pip install kivy pyinstaller
+```
+
+2. Build the Windows executable:
+
+```python build_scripts/build_windows.py```
+
+3. After building:
+
+- The .exe will be located in dist_win/.
+- keep the data/ folder next to the .exe (images, Excel results).
+- The first run will create results.xlsx in data/ if it doesn’t exist.
+
 
 ---
 
