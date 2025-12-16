@@ -23,7 +23,9 @@ from images_processor import get_patient_images
 # Load the KV file for the Viewer layout
 Builder.load_file(os.path.join(os.path.dirname(__file__), "viewer.kv"))
 
-
+# ==========================
+# Define Viewer class
+# ==========================
 class Viewer(BoxLayout):
     current_patient = NumericProperty(1) # Track the current patient ID
 
@@ -34,6 +36,7 @@ class Viewer(BoxLayout):
         self.shortcuts_enabled = True  # NEW: flag to enable/disable keyboard shortcuts       
         Window.bind(on_key_down=self._on_keyboard_down) # Bind keyboard event
         Clock.schedule_once(lambda dt: self.buttons_update(), 0)  # Initial button update, with Clock to wait for UI to be ready
+        self.sounds_enabled = True  # Sound enabled by default
         self.sounds = Sounds()  # Initialize sounds handler
 
     # Handle keyboard input, delegating to the helpers/keyboard_handler.py
@@ -59,12 +62,11 @@ class Viewer(BoxLayout):
         self.buttons_update() # Reset buttons for the new patient
         self.ids.patient_label.text = f"Current Patient: {self.current_patient}"
 
-
     def validate_item(self):
         """Called when Validate button is pressed or Space key is pressed"""
         print("Validate clicked… ")
         excel_process(self) # Write the results to the corresponding patient in the Excel file
-        self.sounds.play_validate()  # Play the validation sound
+        self.sounds.play_validate() if self.sounds_enabled else None # Play validate sound if enabled
         self.current_patient += 1
         self.buttons_update() # Reset buttons for the new patient
         self.ids.patient_label.text = f"Current Patient: {self.current_patient}"
@@ -120,3 +122,13 @@ class Viewer(BoxLayout):
             img_widget.bind(texture=update_height)
 
             layout.add_widget(img_widget)
+
+    def toggle_sound(self): # Switch sound on/off
+        """Toggle sound on/off."""
+        if self.sounds_enabled:
+            self.sounds_enabled = False
+            print("Sound disabled.")
+        else:
+            self.sounds_enabled = True
+            print("Sound enabled.")
+  

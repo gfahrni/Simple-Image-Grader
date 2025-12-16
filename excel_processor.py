@@ -5,7 +5,8 @@
 import os
 from datetime import datetime
 from openpyxl import Workbook, load_workbook
-from paths import runtime_path
+from helpers.paths import DATA_FOLDER
+
 
 
 # -----------------------------
@@ -14,7 +15,7 @@ from paths import runtime_path
 
 def get_excel_name(): 
     """Returns the Excel filename."""
-    return runtime_path("results.xlsx")
+    return os.path.join(DATA_FOLDER, "results.xlsx")
 
 def get_current_patient(viewer):
     return viewer.current_patient
@@ -110,7 +111,7 @@ def excel_backup(filename):
     """
 
     # Create folder if missing
-    backup_dir = runtime_path("excel_backup")
+    backup_dir = os.path.join(DATA_FOLDER, "excel_backup")
     if not os.path.exists(backup_dir):
         os.makedirs(backup_dir)
         print(f"Created backup folder: {backup_dir}")

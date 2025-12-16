@@ -18,6 +18,18 @@
             text: "Current Patient: " + str(root.current_patient)
             color: 1, 1, 1, 1
 
+        # Toggle button to mute/unmute sounds
+        ToggleButton:
+            id: sound_toggle
+            text: "Unmute (M)" if self.state == "down" else "Mute (M)"
+            background_color: 0.8, 0.8, 0.8, 1
+            color: 1, 1, 1, 1
+            size_hint_x: 0.2 #position: top right with some spacing
+            on_state:
+                self.text = "Unmute (M)" if self.state == "down" else "Mute (M)"
+                root.toggle_sound() # Call viewer.py method to toggle sound
+
+
     # Middle layout - 75% height, scrollable
     ScrollView:
         size_hint_y: 0.75

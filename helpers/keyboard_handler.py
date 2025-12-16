@@ -15,21 +15,24 @@ def handle_key_press(viewer, key):
         True if the key was handled, False otherwise.
     """
 
-    # Previous / Next / Validate / Clear / Go To
+    # Previous / Next / Validate / Clear / Go To / Mute Sound
     if key == 113:  # Q
-        viewer.ids.previous_button.trigger_action(duration=0.1)
+        viewer.ids.previous_button.trigger_action(duration=0.1) # Trigger Previous button
         return True
     elif key == 101:  # E
-        viewer.ids.next_button.trigger_action(duration=0.1)
+        viewer.ids.next_button.trigger_action(duration=0.1) # Trigger Next button
         return True
     elif key == 32:   # Space
-        viewer.ids.validate_button.trigger_action(duration=0.1)
+        viewer.ids.validate_button.trigger_action(duration=0.1) # Trigger Validate button
         return True
     elif key == 99:   # C
-        viewer.ids.clear_button.trigger_action(duration=0.1)
+        viewer.ids.clear_button.trigger_action(duration=0.1) # Trigger Clear button
         return True
     elif key == 103:  # G
-        viewer.ids.goto_button.trigger_action(duration=0.1)
+        viewer.ids.goto_button.trigger_action(duration=0.1) # Trigger Go To button
+        return True
+    elif key == 109:  # M
+        viewer.ids.sound_toggle.trigger_action(duration=0.1) # Trigger Mute Sound button
         return True
 
     # Toggle buttons 1-5

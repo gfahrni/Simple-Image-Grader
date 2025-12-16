@@ -1,6 +1,6 @@
 # Simple Image Grader
 
-**Simple Image Grader** is a lightweight Python/Kivy application for quickly reviewing and grading images associated with patients. It provides a simple interface to toggle multiple grading criteria, navigate between patients, and save results to an Excel file.
+**Simple Image Grader** is a lightweight Python/Kivy application for reviewing and grading patient images. It provides a simple interface to toggle grading criteria, navigate between patients, and save results to an Excel file.
 
 ---
 
@@ -8,22 +8,26 @@
 
 ## Features
 
-- Display images for each patient in a scrollable view.
+- Display patient images in a scrollable view.
 - Grade images using 5 toggle buttons:
   1. Bad image quality
   2. Small segmentation error
   3. Large segmentation error
   4. Artifact
   5. Infarct
+- Toggle buttons provide color feedback:
+  - Gray = not selected
+  - Blue = selected manually
+  - Green/Red = restored from Excel
 - Keyboard shortcuts for fast navigation:
   - `Q` → Previous patient
   - `E` → Next patient
   - `Space` → Validate and save
   - `C` → Clear toggles
-  - `G` → Go to specific patient
+  - `G` → Go to a specific patient (popup disables shortcuts temporarily)
   - `1-5` → Toggle corresponding button
-- Automatic Excel file creation and backup.
-- Validation sound feedback.
+- Automatic Excel file creation, read/write, and backup.
+- Validation sound feedback when saving a patient.
 - Popup support for "Go To Patient".
 
 ---
@@ -55,17 +59,17 @@ pip install -r requirements.txt
 
 ## Usage
 
-Run the app with:
+Run the app:
 
 ```bash
 python main.py
 ```
 
-- Ensure an `images/` folder exists with patient images named like `001_p1.png`, `001_p2.png`, etc.
-- The first run will create a `results.xlsx` Excel file to store grading results.
-- Use the toggle buttons or keyboard shortcuts to grade images.
-- Use the "Validate" button (or Space key) to save results and move to the next patient.
-- Backups of Excel data are automatically created if data for a patient is overwritten.
+- Ensure the `data/images/` folder exists with patient images named like `001_p1.png`, `001_p2.png`, etc.
+- The first run will create a `results.xlsx` in `data/` to store grading results.
+- Use toggle buttons or keyboard shortcuts to grade images.
+- Press "Validate" (or Space) to save and move to the next patient.
+- Backups of Excel data are automatically created if overwriting a patient row.
 
 ---
 
@@ -76,20 +80,30 @@ Simple-Image-Grader/
 ├── main.py
 ├── viewer.py
 ├── viewer.kv
-├── paths.py
 ├── excel_processor.py
 ├── images_processor.py
 ├── helpers/
 │   ├── sounds.py
+│   ├── paths.py
+│   ├── icon_setup.py
 │   ├── popups.py
 │   ├── keyboard_handler.py
-│   └── toggle_helpers.py
-├── sounds/
-│   └── validate.wav
-├── images/
-│   └── *.png
+│   ├── toggle_helpers.py
+├── assets/
+│   ├── SimpleImageGrader.icns
+│   ├── SimpleImageGrader.ico
+│   ├── validate.wav
+│   ├── screenshot_demo.png
+├── data/
+│   ├── results.xlsx
+│   └── images/
+│       └── *.png
 ├── requirements.txt
-└── SimpleImageGrader.icns
+├── build_scripts/
+│   ├── build_mac.py
+│   ├── build_windows.py
+├── LICENSE
+└── README.md
 ```
 
 ---
@@ -97,16 +111,24 @@ Simple-Image-Grader/
 ## macOS Deployment
 
 1. Install dependencies:
-   ```bash
-   pip install kivy pyinstaller
-   ````
+
+```bash
+pip install kivy pyinstaller
+```
 
 2. Build the macOS app:
-   ```bash
-   python build_mac.py
-   ````
 
-The .app bundle will be created at the OUTPUT_FOLDER in build_mac.py location
+```bash
+python build_scripts/build_mac.py
+```
+
+The `.app` bundle will be created in the `OUTPUT_FOLDER` specified in the build script.
+
+---
+
+## Windows Deployment
+
+*(Not implemented yet, see `build_scripts/build_windows.py` placeholder)*
 
 ---
 
@@ -114,11 +136,4 @@ The .app bundle will be created at the OUTPUT_FOLDER in build_mac.py location
 
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
 
----
-
-## Notes
-
-- Works on **macOS** and **Windows**.
-- Compatible with Python 3.10+.
-- Uses Kivy for the GUI and OpenPyXL for Excel manipulation.
 

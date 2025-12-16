@@ -1,6 +1,6 @@
 import os
 import re
-from paths import runtime_path
+from helpers.paths import DATA_FOLDER
 
 def scan_images_folder(folder="images"):
     """
@@ -28,7 +28,7 @@ def get_patient_images(patient_id):
     """
     Returns a list of image filenames for a given patient, sorted by image number.
     """
-    folder = runtime_path("images")
+    folder = os.path.join(DATA_FOLDER, "images") # Path to 'images' folder
     pattern = re.compile(r"(\d+)_p(\d+)\.\w+")
     images = []
 

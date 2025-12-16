@@ -10,11 +10,14 @@ OUTPUT_FOLDER = "/Users/guillaumefahrni/Desktop/APPTEST" # Change this to your d
 
 # Application specific settings
 NAME = "SimpleImageGrader"
-ICON = "SimpleImageGrader.icns"
+ICON = "assets/SimpleImageGrader.icns"
 MAIN = "main.py"
 WORKPATH = os.path.join(os.getcwd(), "build")  # temporary PyInstaller folder
 WINDOWED = True       # True = no terminal window
-ADD_DATA = ["viewer.kv:."]  # Add any extra files/folders here
+ADD_DATA = [
+    "viewer.kv:.", 
+    "assets:assets",
+    ]  # Add any extra files/folders here
 SPEC_FILE = f"{NAME}.spec"
 
 # Function to clean old build/dist
@@ -58,7 +61,7 @@ print("Running PyInstaller command:")
 print(" ".join(cmd))
 
 # Execute PyInstaller
-subprocess.run(cmd)
+subprocess.run(cmd, check=True) # check=True to raise error if fails
 
 # Keep only the .app, remove other files/folders in OUTPUT_FOLDER
 app_path = os.path.join(OUTPUT_FOLDER, f"{NAME}.app")
