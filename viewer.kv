@@ -12,6 +12,18 @@
             Rectangle:
                 pos: self.pos
                 size: self.size
+
+        # Toggle button for left/right coronary dominance
+        ToggleButton:
+            id: dominance_toggle
+            text: "Left Dominance (D)" if self.state == "down" else "Right Dominance (D)"
+            background_color: 0.8, 0.8, 0.8, 1
+            color: 1, 1, 1, 1
+            #position: top left with some spacing
+            size_hint_x: 0.3
+            on_state:
+                self.text = "Left Dominance (D)" if self.state == "down" else "Right Dominance (D)"
+
  
         Label:
             id: patient_label
@@ -28,6 +40,9 @@
             on_state:
                 self.text = "Unmute (M)" if self.state == "down" else "Mute (M)"
                 root.toggle_sound() # Call viewer.py method to toggle sound
+
+
+
 
 
     # Middle layout - 75% height, scrollable

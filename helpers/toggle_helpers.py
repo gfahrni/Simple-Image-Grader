@@ -24,6 +24,7 @@ def update_toggles(viewer, patient_id=None):
         viewer.ids.toggle_3,
         viewer.ids.toggle_4,
         viewer.ids.toggle_5,
+        viewer.ids.dominance_toggle
     ]
 
     # Case 1: No data → reset UI
@@ -61,6 +62,7 @@ def clear_toggles(viewer):
         viewer.ids.toggle_3,
         viewer.ids.toggle_4,
         viewer.ids.toggle_5,
+        viewer.ids.dominance_toggle
     ]
     for t in toggles:
         t.state = "normal"

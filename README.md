@@ -15,20 +15,31 @@
   3. Large segmentation error
   4. Artifact
   5. Infarct
+- Assess dominance using a toggle button (right by default, left if clicked)
 - Toggle buttons provide color feedback:
   - Gray = not selected
   - Blue = selected manually
   - Green/Red = restored from Excel
-- Keyboard shortcuts for fast navigation:
-  - `Q` → Previous patient
-  - `E` → Next patient
-  - `Space` → Validate and save
-  - `C` → Clear toggles
-  - `G` → Go to a specific patient (popup disables shortcuts temporarily)
-  - `1-5` → Toggle corresponding button
+- Keyboard shortcuts for fast navigation
 - Automatic Excel file creation, read/write, and backup.
 - Validation sound feedback when saving a patient.
 - Popup support for "Go To Patient".
+
+## Keyboard Shortcuts
+
+- Q → Previous patient
+- E → Next patient
+- Space → Validate and save current patient
+- C → Clear all grading toggles
+- G → Go to a specific patient (opens popup)
+- 1–5 → Toggle grading criteria:
+  1. Bad image quality
+  2. Small segmentation error
+  3. Large segmentation error
+  4. Artifact
+  5. Infarct
+- D → Toggle coronary dominance (Left / Right)
+- M → Mute / unmute validation sound
 
 ---
 

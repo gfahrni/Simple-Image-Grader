@@ -31,6 +31,7 @@ def get_button_status(viewer):
         viewer.ids.toggle_3.state,
         viewer.ids.toggle_4.state,
         viewer.ids.toggle_5.state,
+        viewer.ids.dominance_toggle.state
     ]
 
     status = [1 if t == "down" else 0 for t in toggles]
@@ -52,12 +53,13 @@ def excel_create(filename):
     ws = wb.active
     ws.title = "Sheet1"
 
-    ws["A1"] = "id"
-    ws["B1"] = "bad_img_qual"
-    ws["C1"] = "small_seg_err"
-    ws["D1"] = "large_seg_err"
-    ws["E1"] = "artifact"
-    ws["F1"] = "infarct"
+    ws["A1"] = "id" # Patient ID
+    ws["B1"] = "bad_img_qual" # Button 1 = bad image quality
+    ws["C1"] = "small_seg_err" # Button 2 = small segmentation error
+    ws["D1"] = "large_seg_err" # Button 3 = large segmentation error
+    ws["E1"] = "artifact" # Button 4 = artifact
+    ws["F1"] = "infarct" # Button 5 = infarct
+    ws["G1"] = "dominance" # Dominance: 0=Right, 1=Left
 
     wb.save(filename)
     wb.close()
@@ -96,8 +98,8 @@ def excel_row_has_data(filename, patient_id):
 
     row = patient_id + 1
 
-    # Check columns B-F (toggle values)
-    has_data = any(ws.cell(row=row, column=col).value is not None for col in range(2, 7))
+    # Check columns B-G (toggle values)
+    has_data = any(ws.cell(row=row, column=col).value is not None for col in range(2, 8))
 
     wb.close()
     return has_data
@@ -136,7 +138,7 @@ def excel_backup(filename):
 
 def excel_read(filename, patient_id):
     """
-    Reads toggle values (B–F) for a given patient.
+    Reads toggle values (B–G) for a given patient.
     Returns a list of 0/1 or None if row is empty.
     """
     if not os.path.exists(filename):
@@ -147,7 +149,7 @@ def excel_read(filename, patient_id):
     row = patient_id + 1
 
     values = []
-    for col in range(2, 7):
+    for col in range(2, 8): # Columns B to G
         values.append(ws.cell(row=row, column=col).value)
 
     wb.close()
