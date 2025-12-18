@@ -8,9 +8,9 @@ def set_window_icon():
     """Set window icon for macOS and Windows only"""
     # Define icon_path based on platform
     if sys.platform == 'darwin':  # macOS
-        icon_path = RUNTIME_PATH("assets", "icon.icns")
+        icon_path = RUNTIME_PATH("assets", "SimpleImageGrader.icns")
     elif sys.platform == 'win32':  # Windows
-        icon_path = RUNTIME_PATH("assets", "icon.ico")
+        icon_path = RUNTIME_PATH("assets", "SimpleImageGrader.ico")
     else:
         # Not macOS or Windows, don't set icon
         return False

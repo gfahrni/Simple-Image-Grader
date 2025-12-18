@@ -5,17 +5,24 @@
 import os
 from datetime import datetime
 from openpyxl import Workbook, load_workbook
+from shutil import copy2
 from helpers.paths import DATA_FOLDER
 
 
+# -----------------------------
+# Constants
+# -----------------------------
+EXCEL_RESULTS_FILENAME = "results" # Name of the .xlsx file to store results (e.g., "results")
+EXCEL_RESULTS_EXTENSION = ".xlsx" # Excel file extension
+EXCEL_BACKUP_FOLDER_NAME = "excel_backup" # Folder name for backups
 
 # -----------------------------
 # Excel helper functions
 # -----------------------------
 
-def get_excel_name(): 
-    """Returns the Excel filename."""
-    return os.path.join(DATA_FOLDER, "results.xlsx")
+def get_excel_path(): 
+    """Returns the Excel excel_path."""
+    return os.path.join(DATA_FOLDER, f"{EXCEL_RESULTS_FILENAME}{EXCEL_RESULTS_EXTENSION}") # Full path to results.xlsx (e.g., .../data/results.xlsx)
 
 def get_current_patient(viewer):
     return viewer.current_patient
@@ -44,9 +51,9 @@ def get_button_status(viewer):
     return status
 
 
-def excel_create(filename):
+def excel_create(excel_path):
     """Creates the Excel file with headers if it does not exist."""
-    if os.path.exists(filename):
+    if os.path.exists(excel_path):
         return
 
     wb = Workbook()
@@ -61,17 +68,17 @@ def excel_create(filename):
     ws["F1"] = "infarct" # Button 5 = infarct
     ws["G1"] = "dominance" # Dominance: 0=Right, 1=Left
 
-    wb.save(filename)
+    wb.save(excel_path)
     wb.close()
-    print(f"Created Excel file: {filename}")
+    print(f"Created Excel file: {excel_path}")
 
 
-def excel_write(filename, patient_id, button_status):
+def excel_write(excel_path, patient_id, button_status):
     """
     Writes a row for the given patient_id.
     Overwrites that row each time.
     """
-    wb = load_workbook(filename)
+    wb = load_workbook(excel_path)
     ws = wb.active
 
     row = patient_id + 1
@@ -81,19 +88,19 @@ def excel_write(filename, patient_id, button_status):
     for i, value in enumerate(button_status, start=2):
         ws.cell(row=row, column=i, value=value)
 
-    wb.save(filename)
+    wb.save(excel_path)
     wb.close()
     print(f"Wrote data for patient {patient_id} → Row {row}")
 
-def excel_row_has_data(filename, patient_id):
+def excel_row_has_data(excel_path, patient_id):
     """
     Returns True if the patient row already contains data.
     Row = patient_id + 1
     """
-    if not os.path.exists(filename):
+    if not os.path.exists(excel_path):
         return False
 
-    wb = load_workbook(filename)
+    wb = load_workbook(excel_path)
     ws = wb.active
 
     row = patient_id + 1
@@ -105,46 +112,40 @@ def excel_row_has_data(filename, patient_id):
     return has_data
 
 
-def excel_backup(filename):
+def excel_backup(excel_path):
     """
     Creates a backup copy of the Excel file.
-    Backup filename format:
-        excel_backup/myexcel_20250112_153022.xlsx
+    Backup excel_path format:
+        e.g. excel_backup/results_20250112_153022.xlsx
     """
 
     # Create folder if missing
-    backup_dir = os.path.join(DATA_FOLDER, "excel_backup")
+    backup_dir = os.path.join(DATA_FOLDER, EXCEL_BACKUP_FOLDER_NAME) # backup folder (e.g., .../data/excel_backup)
     if not os.path.exists(backup_dir):
-        os.makedirs(backup_dir)
-        print(f"Created backup folder: {backup_dir}")
+        os.makedirs(backup_dir, exist_ok=True) 
+        print(f"Created backup folder: {EXCEL_BACKUP_FOLDER_NAME} at {backup_dir}")
 
     # Format timestamp
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S") # current date and time, e.g. 20250112_153022
 
-    # Extract base name without extension
-    base = os.path.splitext(filename)[0]
-
-    # Build backup filename
-    backup_name = f"{base}_{timestamp}.xlsx"
-    backup_path = os.path.join(backup_dir, backup_name)
-
+    # Build backup excel_path (e.g. .../data/excel_backup/results_20250112_153022.xlsx)
+    backup_path = os.path.join(backup_dir, f"{EXCEL_RESULTS_FILENAME}_{timestamp}{EXCEL_RESULTS_EXTENSION}") 
     # Copy file
-    if os.path.exists(filename):
-        from shutil import copy2
-        copy2(filename, backup_path)
+    if os.path.exists(excel_path):
+        copy2(excel_path, backup_path)
         print(f"Backup created → {backup_path}")
     else:
         print("Backup skipped: original file does not exist yet.")
 
-def excel_read(filename, patient_id):
+def excel_read(excel_path, patient_id):
     """
     Reads toggle values (B–G) for a given patient.
     Returns a list of 0/1 or None if row is empty.
     """
-    if not os.path.exists(filename):
+    if not os.path.exists(excel_path):
         return None
 
-    wb = load_workbook(filename)
+    wb = load_workbook(excel_path)
     ws = wb.active
     row = patient_id + 1
 
@@ -173,19 +174,19 @@ def excel_process(viewer):
      5) Backup if row already contains data
      6) Write row
     """
-    filename = get_excel_name()
+    excel_path = get_excel_path()
     patient_id = get_current_patient(viewer)
     status = get_button_status(viewer)
 
     # Step 1: Create the file if missing
-    excel_create(filename)
+    excel_create(excel_path)
 
     # Step 2: Backup BEFORE overwriting existing data
-    if excel_row_has_data(filename, patient_id):
+    if excel_row_has_data(excel_path, patient_id):
         print("Row already has data → creating backup BEFORE overwrite")
-        excel_backup(filename)
+        excel_backup(excel_path)
     else:
         print("Row is empty → NO backup needed")
 
     # Step 3: Write processed values
-    excel_write(filename, patient_id, status)
+    excel_write(excel_path, patient_id, status)

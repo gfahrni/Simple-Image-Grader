@@ -15,7 +15,7 @@ import os
 
 
 # Your functions
-from excel_processor import (excel_process, excel_row_has_data, excel_read, get_excel_name,get_current_patient)
+from excel_processor import (excel_process, excel_row_has_data, excel_read, get_excel_path, get_current_patient)
 from helpers.keyboard_handler import handle_key_press
 from helpers.toggle_helpers import update_toggles, clear_toggles
 from helpers.popups import go_to_patient_popup

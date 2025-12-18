@@ -3,7 +3,7 @@ Toggle helpers for Viewer.
 Functions to update or reset toggle buttons based on Excel data or to clear them.
 """
 
-from excel_processor import excel_read, excel_row_has_data, get_excel_name
+from excel_processor import excel_read, excel_row_has_data, get_excel_path
 
 def update_toggles(viewer, patient_id=None):
     """
@@ -16,7 +16,7 @@ def update_toggles(viewer, patient_id=None):
     if patient_id is None:
         patient_id = viewer.current_patient
 
-    filename = get_excel_name()
+    filename = get_excel_path()
 
     toggles = [
         viewer.ids.toggle_1,
