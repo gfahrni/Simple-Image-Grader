@@ -13,18 +13,15 @@
                 pos: self.pos
                 size: self.size
 
-        # Toggle button for left/right coronary dominance
-        ToggleButton:
-            id: dominance_toggle
-            text: "Left Dominance (D)" if self.state == "down" else "Right Dominance (D)"
+        # Button for domiance (left/right/codominance)
+        Button:
+            id: dominance_button
+            text: "Right Dominance (D)"
             background_color: 0.8, 0.8, 0.8, 1
-            color: 1, 1, 1, 1
-            #position: top left with some spacing
             size_hint_x: 0.3
-            on_state:
-                self.text = "Left Dominance (D)" if self.state == "down" else "Right Dominance (D)"
+            on_press:
+                root.cycle_dominance() # Call viewer.py method to cycle dominance (left/right/codominance)
 
- 
         Label:
             id: patient_label
             text: "Current Patient: " + str(root.current_patient)

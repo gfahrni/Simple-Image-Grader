@@ -29,26 +29,31 @@ def get_current_patient(viewer):
 
 def get_button_status(viewer):
     """
-    Reads the 5 toggle buttons from the viewer,
-    returns a list of 0/1.
+    Reads the 5 toggle buttons (0/1) and dominance (0/1/2)
+    returns a list of 6 values.
     """
-    toggles = [
+
+    toggle_states = [
         viewer.ids.toggle_1.state,
         viewer.ids.toggle_2.state,
         viewer.ids.toggle_3.state,
         viewer.ids.toggle_4.state,
         viewer.ids.toggle_5.state,
-        viewer.ids.dominance_toggle.state
     ]
 
-    status = [1 if t == "down" else 0 for t in toggles]
+    toggle_values = [1 if t == "down" else 0 for t in toggle_states]
+
+    dominance_value = int(viewer.dominance)  # 0,1,2
+
+    status = toggle_values + [dominance_value]
 
     print("\n--- Button Status ---")
     for i, val in enumerate(status, start=1):
-        print(f"Button {i}: {val}")
+        print(f"Value {i}: {val}")
     print("---------------------\n")
 
     return status
+
 
 
 def excel_create(excel_path):
@@ -66,7 +71,7 @@ def excel_create(excel_path):
     ws["D1"] = "large_seg_err" # Button 3 = large segmentation error
     ws["E1"] = "artifact" # Button 4 = artifact
     ws["F1"] = "infarct" # Button 5 = infarct
-    ws["G1"] = "dominance" # Dominance: 0=Right, 1=Left
+    ws["G1"] = "dominance" # Dominance: 0=Right, 1=Left, 2=Codominance
 
     wb.save(excel_path)
     wb.close()

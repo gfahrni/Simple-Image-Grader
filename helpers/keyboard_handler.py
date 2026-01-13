@@ -35,7 +35,7 @@ def handle_key_press(viewer, key):
         viewer.ids.sound_toggle.trigger_action(duration=0.1) # Trigger Mute Sound button
         return True
     elif key == 100:  # D
-        viewer.ids.dominance_toggle.trigger_action(duration=0.1) # Trigger Dominance toggle button
+        viewer.cycle_dominance() # Cycle dominance button (left/right/codominance)
         return True
 
     # Toggle buttons 1-5

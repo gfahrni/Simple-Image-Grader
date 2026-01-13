@@ -33,7 +33,7 @@ class Viewer(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.current_patient = 1  # Initializedefault patient number
+        self.current_patient = 1  # Initialize default patient 
         self.shortcuts_enabled = True  # NEW: flag to enable/disable keyboard shortcuts       
         Window.bind(on_key_down=self._on_keyboard_down) # Bind keyboard event
         Clock.schedule_once(lambda dt: self.buttons_update(), 0)  # Initial button update, with Clock to wait for UI to be ready
@@ -133,3 +133,19 @@ class Viewer(BoxLayout):
             self.sounds_enabled = True
             print("Sound enabled.")
   
+    def cycle_dominance(self): #method to cycle through dominance options (left, right, codominance)
+        self.dominance = (self.dominance + 1) % 3 # Cycle through 0, 1, 2
+        self.update_dominance_ui()
+
+    def update_dominance_ui(self): # method to update dominance button UI, text and color
+        btn = self.ids.dominance_button
+
+        if self.dominance == 0: # Right dominance
+            btn.text = "Right Dominance (D)"
+            btn.background_color = (0.8, 0.8, 0.8, 1)
+        elif self.dominance == 1: # Left dominance
+            btn.text = "Left Dominance (D)"
+            btn.background_color = (0.3, 0.6, 0.9, 1)
+        else:   # self.dominance == 2: # Co-dominance
+            btn.text = "Co-dominant (D)"
+            btn.background_color = (0.6, 0.4, 0.9, 1)

@@ -5,6 +5,7 @@ Functions to update or reset toggle buttons based on Excel data or to clear them
 
 from excel_processor import excel_read, excel_row_has_data, get_excel_path
 
+
 def update_toggles(viewer, patient_id=None):
     """
     Update all ToggleButtons in the viewer based on Excel data.
@@ -24,27 +25,43 @@ def update_toggles(viewer, patient_id=None):
         viewer.ids.toggle_3,
         viewer.ids.toggle_4,
         viewer.ids.toggle_5,
-        viewer.ids.dominance_toggle
     ]
 
-    # Case 1: No data → reset UI
-    if not excel_row_has_data(filename, patient_id):
+    # Read values from Excel
+    values = excel_read(filename, patient_id)
+
+    # --------------------------------------------------
+    # Case 1: No data for this patient → RESET UI
+    # --------------------------------------------------
+    if values is None or not excel_row_has_data(filename, patient_id):
         for t in toggles:
             t.state = "normal"
             t.background_color = (0.8, 0.8, 0.8, 1)  # gray
+
+        viewer.dominance = 0  # Default (Right)
+        viewer.update_dominance_ui()
+
         print(f"Patient {patient_id}: empty → buttons reset")
         return
 
-    # Case 2: Data exists → restore state
-    values = excel_read(filename, patient_id)
+    # --------------------------------------------------
+    # Case 2: Data exists → RESTORE UI
+    # --------------------------------------------------
 
-    for toggle, value in zip(toggles, values):
+    # values = [t1, t2, t3, t4, t5, dominance]
+    toggle_values = values[:-1]
+    dominance_value = values[-1]
+
+    for toggle, value in zip(toggles, toggle_values):
         if value == 1:
             toggle.state = "down"
             toggle.background_color = (0.2, 0.7, 0.2, 1)  # green
         else:
             toggle.state = "normal"
             toggle.background_color = (0.8, 0.2, 0.2, 1)  # red
+
+    viewer.dominance = dominance_value
+    viewer.update_dominance_ui()
 
     print(f"Patient {patient_id}: buttons restored from Excel")
 
@@ -62,9 +79,13 @@ def clear_toggles(viewer):
         viewer.ids.toggle_3,
         viewer.ids.toggle_4,
         viewer.ids.toggle_5,
-        viewer.ids.dominance_toggle
     ]
+
     for t in toggles:
         t.state = "normal"
         t.background_color = (0.8, 0.8, 0.8, 1)
+
+    viewer.dominance = 0  # Default (Right)
+    viewer.update_dominance_ui()
+
     print("All toggle buttons cleared")
